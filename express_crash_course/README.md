@@ -5,10 +5,12 @@
 ### Add dependency <u>listed in package.json</u> & <u>installed in node_moudules</u>
 
 ```bash
-npm install -D nodemon
+npm i -D nodemon
+npm i moment
 ```
 
 - `nodemon` : to monitor `server.js` to resart the server everytime it changes
+- `moment`: deal with date formatting
 
 ### Create scripts
 
