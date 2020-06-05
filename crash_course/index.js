@@ -1,8 +1,9 @@
-// Class module import
-const Person = require("./personClass");
-const person1 = new Person("Hao Liang", 24);
-person1.greeting();
+const Logger = require("./logger");
 
-// Function module import
-const person = require("./person");
-console.log(person);
+const logger = new Logger();
+
+logger.on("message", (data) => console.log("Called Listener", data));
+
+logger.log("Hello World!");
+logger.log("I love Node.js!");
+logger.log("I leant React!");
