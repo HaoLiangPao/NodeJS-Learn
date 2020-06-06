@@ -6,11 +6,13 @@
 
 ```bash
 npm i -D nodemon
-npm i moment
+npm i moment express-handlebars uuid
 ```
 
 - `nodemon` : to monitor `server.js` to resart the server everytime it changes
 - `moment`: deal with date formatting
+- `uuid`: generate id generator
+- `express-handlebars`: render templates
 
 ### Create scripts
 
@@ -74,4 +76,7 @@ git push heroku master
 ## Tips
 
 1. `res.use()` usually get used when **middleware functions** are included.
-2. 
+2. Usually one of three methods are used in full stack applications
+   1. set static folder
+   2. render templates
+   3. API + frontend frameworks

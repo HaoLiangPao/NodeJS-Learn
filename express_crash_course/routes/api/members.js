@@ -32,7 +32,9 @@ router.post("/", (req, res) => {
     res.status(400).json({ msg: "Please include a name and email" });
   } else {
     members.push(newMember);
-    res.send(members);
+    res.json(members);
+    // When using server.render(view) with templates
+    // res.redirect("/");
   }
 });
 // Update a member
