@@ -2,7 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 
 // Middleware files
-const logger = require("./middleware/logger");
+// const logger = require("./middleware/logger"); // custom logger
+const morgan = require("morgan");
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
@@ -12,8 +13,10 @@ dotenv.config({ path: "./config/config.env" });
 
 const app = express();
 
-// Run a middleare function -- logger
-app.use(logger);
+// Dev running middleware
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 // Get routes defined
 app.use("/api/v1/bootcamps", bootcamps);
