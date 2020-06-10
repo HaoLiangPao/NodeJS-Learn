@@ -15,3 +15,9 @@ npm i express dotenv
 npm i -D nodemon
 ```
 
+---
+
+## Tips:
+
+1. In express, when editing the response from a server,  `res.send() can send json objects as well, express will automatically convert it`. However, usually we use `res.json()` for json objects. 
+
