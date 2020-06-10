@@ -54,3 +54,5 @@ ehthumbs.db
 Thumbs.db
 # Local Netlify folder
 .netlify
+# Environment Variables
+config/config.env
