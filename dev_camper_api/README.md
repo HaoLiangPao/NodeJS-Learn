@@ -5,11 +5,14 @@
 
 
 ```bash
-npm i express dotenv
+npm i express dotenv mongoose colors morgan
 ```
 
 - `express`: web framework
 - [`dotenv`](https://github.com/motdotla/dotenv): allows us to create environment files and place it into a config file
+- [`morgan`](https://github.com/expressjs/morgan): a third party middleware function working as a logger
+- [`colors`](https://github.com/marak/colors.js/): a third party package which can change color and styles of logging message in node.js console
+- [`mongoose`](https://mongoosejs.com/): MongoDB object modeling designed to work in an asynchronous environment.
 
 ```bash
 npm i -D nodemon
