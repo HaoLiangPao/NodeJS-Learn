@@ -3,6 +3,9 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const colors = require("colors");
 
+// Load env vars (Very important! to place it before any thing that will use an environment variable)
+dotenv.config({ path: "./config/config.env" });
+
 // Middleware files
 // const logger = require("./middleware/logger"); // custom logger
 const morgan = require("morgan");
@@ -10,9 +13,6 @@ const errorHandler = require("./middleware/error");
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
-
-// Load env vars
-dotenv.config({ path: "./config/config.env" });
 
 // --------- App running -----------
 const app = express();

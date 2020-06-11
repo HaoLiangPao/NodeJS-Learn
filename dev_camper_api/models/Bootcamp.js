@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
+const geoCoder = require("../utils/geocoder");
 
 // Slug: a url friendly version of name
 // Made use of mongoose GetJson Object
@@ -118,6 +119,24 @@ BootcampSchema.pre("save", function (next) {
   // pre middleware function, have access to all fields in the document
   this.slug = slugify(this.name, { lower: true });
   next();
+});
+
+// Geocode & create location field
+BootcampSchema.pre("save", async function (next) {
+  const loc = await geoCoder.geocode(this.address);
+  this.location = {
+    type: "Point",
+    coordinates: [loc[0].longitude, loc[0].latitude],
+    formattedAddress: loc[0].formattedAddress,
+    street: loc[0].streetName,
+    city: loc[0].city,
+    state: loc[0].stateCode,
+    zipcode: loc[0].zipcode,
+    country: loc[0].countryCode,
+  };
+
+  // Do not save address in DB
+  this.address = undefined;
 });
 
 module.exports = mongoose.model("BootCamp", BootcampSchema);

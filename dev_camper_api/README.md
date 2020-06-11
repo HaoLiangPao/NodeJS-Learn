@@ -9,11 +9,29 @@ npm i express dotenv mongoose colors morgan slugify
 ```
 
 - `express`: web framework
+
 - [`dotenv`](https://github.com/motdotla/dotenv): Dotenv is a zero-dependency module that loads environment variables from a `.env` file into [`process.env`](https://nodejs.org/docs/latest/api/process.html#process_process_env)
+
 - [`morgan`](https://github.com/expressjs/morgan): a third party middleware function working as a logger
+
 - [`colors`](https://github.com/marak/colors.js/): a third party package which can change color and styles of logging message in node.js console
+
 - [`mongoose`](https://mongoosejs.com/): MongoDB object modeling designed to work in an asynchronous environment.
-- [`slugify`](https://www.npmjs.com/package/slugify): 
+
+- [`slugify`](https://www.npmjs.com/package/slugify): Change certain fields to a more user-friendly version (**from Name to Slug**)
+  
+  - ```json
+    {
+      name:"Devcentral Bootcamp",
+      slug:"devcentral-bootcamp"
+    }
+    ```
+  
+- [`node-geocoder`](https://www.npmjs.com/package/node-geocoder): Node library for geocoding and reverse geocoding. Can be used as a nodejs library
+
+  - add some environmental variables according to provider of geo infomation and API keys.
+
+
 
 ```bash
 npm i -D nodemon
