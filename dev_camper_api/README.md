@@ -54,4 +54,7 @@ npm i -D nodemon
 ## Tips:
 
 1. In express, when editing the response from a server,  `res.send() can send json objects as well, express will automatically convert it`. However, usually we use `res.json()` for json objects. 
+2. Mongoose model schema:
+   1. Slug: a URL friendly string
+   2. if extra `key:value` pairs sent within the request body, the mongoose schema will only take account of `key:value` pairs previously set
 

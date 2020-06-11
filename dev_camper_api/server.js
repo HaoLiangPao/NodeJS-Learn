@@ -15,6 +15,8 @@ dotenv.config({ path: "./config/config.env" });
 
 // --------- App running -----------
 const app = express();
+// Use body parser middleware
+app.use(express.json());
 connectDB();
 
 // Dev running middleware
