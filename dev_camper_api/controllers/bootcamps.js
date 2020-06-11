@@ -1,3 +1,4 @@
+const ErrorResponse = require("../utils/errorResponse");
 const BootCamp = require("../models/Bootcamp");
 
 // @desc        Get all bootcamps
@@ -20,11 +21,13 @@ exports.getBootCamp = async (req, res, next) => {
   try {
     const bootCamp = await BootCamp.findById(req.params.id);
     if (!bootCamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Bootcamp id: ${req.params.id} is invalid!`, 400)
+      ); // Bad request
     }
     res.status(200).json({ success: true, data: bootCamp });
   } catch (error) {
-    res.status(500).json({ success: false });
+    next(error);
   }
 };
 // @desc        Add a bootcamp
@@ -48,11 +51,13 @@ exports.updateBootCamp = async (req, res, next) => {
       runValidators: true,
     });
     if (!bootCamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Bootcamp id: ${req.params.id} is invalid!`, 400)
+      ); // Bad request
     }
     res.status(200).json({ success: true, data: bootCamp });
   } catch (error) {
-    res.status(500).json({ success: false, msg: error.message });
+    next(error);
   }
 };
 // @desc        Delete a bootcamp
@@ -62,12 +67,14 @@ exports.deleteBootCamp = async (req, res, next) => {
   try {
     const bootCamp = await BootCamp.findByIdAndDelete(req.params.id);
     if (!bootCamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Bootcamp id: ${req.params.id} is invalid!`, 400)
+      ); // Bad request
     }
     res
       .status(200)
       .json({ success: true, msg: "BootCamp deleted", data: bootCamp });
   } catch (error) {
-    res.status(500).json({ success: false });
+    next(error);
   }
 };
