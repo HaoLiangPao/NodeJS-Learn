@@ -38,7 +38,7 @@ exports.createBootCamp = async (req, res, next) => {
     const bootCamp = await BootCamp.create(req.body);
     res.status(201).json({ success: true, data: bootCamp });
   } catch (error) {
-    res.status(500).json({ success: false });
+    next(error);
   }
 };
 // @desc        Update a bootcamp
