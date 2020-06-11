@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 // Slug: a url friendly version of name
 // Made use of mongoose GetJson Object
@@ -111,5 +112,12 @@ const BootcampSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+// Create bootcamp slug from the name
+BootcampSchema.pre("save", function (next) {
+  // pre middleware function, have access to all fields in the document
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
 
 module.exports = mongoose.model("BootCamp", BootcampSchema);

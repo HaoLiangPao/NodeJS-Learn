@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan
+npm i express dotenv mongoose colors morgan slugify
 ```
 
 - `express`: web framework
@@ -13,6 +13,7 @@ npm i express dotenv mongoose colors morgan
 - [`morgan`](https://github.com/expressjs/morgan): a third party middleware function working as a logger
 - [`colors`](https://github.com/marak/colors.js/): a third party package which can change color and styles of logging message in node.js console
 - [`mongoose`](https://mongoosejs.com/): MongoDB object modeling designed to work in an asynchronous environment.
+- [`slugify`](https://www.npmjs.com/package/slugify): 
 
 ```bash
 npm i -D nodemon
@@ -51,10 +52,49 @@ npm i -D nodemon
 
 ---
 
+## Middleware functions:
+
+### async.js
+
+
+
+
+
+
+
+### logger.js
+
+
+
+
+
+
+
+### error.js
+
+
+
+---
+
 ## Tips:
 
 1. In express, when editing the response from a server,  `res.send() can send json objects as well, express will automatically convert it`. However, usually we use `res.json()` for json objects. 
+
 2. Mongoose model schema:
    1. Slug: a URL friendly string
    2. if extra `key:value` pairs sent within the request body, the mongoose schema will only take account of `key:value` pairs previously set
+   
+3. Mongoose preset middle ware functions:
+
+   1. ```javascript
+      // Create bootcamp slug from the name
+      BootcampSchema.pre('save', function (next) {
+        console.log('Slugify ran', this.name);
+        next();
+      })
+      ```
+
+   2. `pre`: runs this middleware function before the operation (in this case, before a document is saved into the database)
+
+   3. `function(){}`: does not use an arrow function here since arrow function handles `this` keyword differently
 
