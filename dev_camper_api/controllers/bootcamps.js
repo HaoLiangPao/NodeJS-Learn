@@ -28,7 +28,7 @@ exports.getBootCamps = asyncHandler(async (req, res, next) => {
   );
 
   // Finding resources
-  query = BootCamp.find(JSON.parse(queryStr));
+  query = BootCamp.find(JSON.parse(queryStr)).populate("courses");
 
   // SELECT FIELDS (specific fields needs to be extracted)
   if (req.query.select) {
@@ -47,7 +47,7 @@ exports.getBootCamps = asyncHandler(async (req, res, next) => {
 
   // Pagination (1 page and 1 item per page by default)
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 25;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   const total = await BootCamp.countDocuments(); // Mongoose method
@@ -74,14 +74,12 @@ exports.getBootCamps = asyncHandler(async (req, res, next) => {
     };
   }
 
-  res
-    .status(200)
-    .json({
-      success: true,
-      count: bootCamps.length,
-      pagination,
-      data: bootCamps,
-    });
+  res.status(200).json({
+    success: true,
+    count: bootCamps.length,
+    pagination,
+    data: bootCamps,
+  });
 });
 // @desc        Get a single bootcamp
 // @route       GET /api/v1/bootcamps/:id
@@ -145,12 +143,14 @@ exports.updateBootCamp = asyncHandler(async (req, res, next) => {
 // @route       Get /api/v1/bootcamps/:id
 // @access      Public
 exports.deleteBootCamp = asyncHandler(async (req, res, next) => {
-  const bootCamp = await BootCamp.findByIdAndDelete(req.params.id);
+  // trigger the middleare function before remove the document
+  const bootCamp = await BootCamp.findById(req.params.id);
   if (!bootCamp) {
     return next(
       new ErrorResponse(`Bootcamp id: ${req.params.id} is invalid!`, 400)
     ); // Bad request
   }
+  bootCamp.remove();
   res
     .status(200)
     .json({ success: true, msg: "BootCamp deleted", data: bootCamp });

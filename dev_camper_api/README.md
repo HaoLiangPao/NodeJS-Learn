@@ -115,4 +115,10 @@ npm i -D nodemon
    2. `pre`: runs this middleware function before the operation (in this case, before a document is saved into the database)
 
    3. `function(){}`: does not use an arrow function here since arrow function handles `this` keyword differently
+   
+4. `populate()` in Mongoose: 
 
+   1. populate()
+   2. Virtual:
+
+5. 
