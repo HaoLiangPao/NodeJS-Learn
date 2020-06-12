@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "7394f698-3982-486f-98ba-da9e8e7e3da3",
+		"name": "DevCamper_API",
+		"description": "Backend API for DevCamper application to manage bootcamps, courses, reviews, users and authentification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BootCamp",
+			"item": [
+				{
+					"name": "Get all bootcamps (Version 1)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps"
+							]
+						},
+						"description": "Fetch all bootcamps from the database. Includes pagenation, filtering, etc."
+					},
+					"response": []
+				},
+				{
+					"name": "Get all bootcamps (Version 1) - with conditions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/?averageCost[lte]=10000&location.city=Boston",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								""
+							],
+							"query": [
+								{
+									"key": "averageCost[lte]",
+									"value": "10000"
+								},
+								{
+									"key": "location.city",
+									"value": "Boston"
+								}
+							]
+						},
+						"description": "Set getting conditions with averageCost and city"
+					},
+					"response": []
+				},
+				{
+					"name": "Add a bootcamp (Version 1)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": "JSON type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Devcentral Bootcamp\",\n    \"description\": \"Is coding your passion? Codemasters will give you the skills and the tools to become the best developer possible. We specialize in front end and full stack web development\",\n    \"website\": \"https://devcentral.com\",\n    \"phone\": \"(444) 444-4444\",\n    \"email\": \"enroll@devcentral.com\",\n    \"address\": \"45 Upper College Rd Kingston RI 02881\",\n    \"careers\": [\n        \"Mobile Development\",\n        \"Web Development\",\n        \"Data Science\",\n        \"Business\"\n    ],\n    \"housing\": false,\n    \"jobAssistance\": true,\n    \"jobGuarantee\": true,\n    \"acceptGi\": true\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps"
+							]
+						},
+						"description": "Add a bootcamp to database. Must be authenticated (must be a publisher or admin)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a bootcamp (Version 1)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"1"
+							]
+						},
+						"description": "Update a bootcamp information in the database. Must be authenticated (a publisher or admin)."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a bootcamp (Version 1)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"1"
+							]
+						},
+						"description": "Delete a bootcamp in the database. Must be authenticated (a publisher or admin)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single bootcamp (Version 1)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"1"
+							]
+						},
+						"description": "Get single bootcamp by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all bootcamps within a radius (Version 1)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/bootcamps/radius/02118/200",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"bootcamps",
+								"radius",
+								"02118",
+								"200"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "BootCamp CRUD functionality",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a3b1a5f5-560d-4485-8d4b-58a1d5224c64",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "794dc004-7fd3-4fff-80e4-730244bcee35",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2d7abba5-e279-44cb-b079-2d8f296848a8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "2f8d4760-82b6-4d88-af3a-10185f49847a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

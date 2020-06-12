@@ -9,15 +9,43 @@ const BootCamp = require("../models/Bootcamp");
 exports.getBootCamps = asyncHandler(async (req, res, next) => {
   let query;
 
-  let queryStr = JSON.stringify(req.query);
+  // copy req.query
+  const reqQuery = { ...req.query };
 
+  // Fields to exclude
+  const removeFields = ["select", "sort"];
+
+  // Loop over removeFields and delete them from reqQuery
+  removeFields.forEach((param) => delete reqQuery[param]);
+
+  // create query string
+  let queryStr = JSON.stringify(reqQuery);
+
+  // create Mongoose operators ($gt, $gte, etc.)
   queryStr = queryStr.replace(
     /\b(gt|gte|lt|lte|in)\b/g,
     (match) => `$${match}`
   );
 
+  // Finding resources
   query = BootCamp.find(JSON.parse(queryStr));
 
+  // SELECT FIELDS (specific fields needs to be extracted)
+  if (req.query.select) {
+    const fields = req.query.select.split(",").join(" "); // get all columns to be seleted
+    query = query.select(fields);
+  }
+
+  // SORT results (sorting order of the output returned)
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" "); // get sorting columns
+    query = query.sort(sortBy);
+  } else {
+    // sort the result in a default order: descending createdAt
+    query = query.sort("-createdAt");
+  }
+
+  // running query
   const bootCamps = await query;
   res
     .status(200)
