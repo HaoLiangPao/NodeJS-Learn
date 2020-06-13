@@ -2,19 +2,16 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const Course = require("../models/Course");
 const BootCamp = require("../models/Bootcamp");
-const Bootcamp = require("../models/Bootcamp");
 
 // @desc        Get all courses
-// @route       GET /api/v1/courses
-// @route       GET /api/v1/bootcamps/:bootcampId/courses
+// @route 1     GET /api/v1/courses
+// @route 2     GET /api/v1/bootcamps/:bootcampId/courses
 // @access      Public
 exports.getCourses = asyncHandler(async (req, res, next) => {
-  // @TODO: add query handler
-  let query;
-
+  // route 1: Get all courses with the bootcampId given
   if (req.params.bootcampId) {
+    const bootcamp = await BootCamp.findById(req.params.bootcampId);
     // Check if bootcamp exists
-    const bootcamp = await Bootcamp.findById(req.params.bootcampId);
     if (!bootcamp) {
       return next(
         new ErrorResponse(
@@ -24,32 +21,15 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
       );
     }
     // Check if any courses related to the bootcamp
-    query = Course.find({ bootcamp: req.params.bootcampId });
-  } else {
-    // Get all courses, populate the reference with document information in certain types
-    query = Course.find().populate({
-      path: "bootcamp",
-      select: "name description",
-    });
+    const courses = await Course.find({ bootcamp: req.params.bootcampId });
+    return res
+      .status(200)
+      .json({ success: true, count: courses.length, data: courses });
   }
-
-  const courses = await query;
-
-  // Error handler
-  if (!courses) {
-    return next(
-      new ErrorResponse(
-        `No courses found with the id of ${req.params.bootcampId}, please check id`,
-        404
-      )
-    );
+  // route 2: Get all courses, populate the reference with document information in certain types
+  else {
+    res.status(200).json(res.advancedResults);
   }
-
-  res.status(200).json({
-    success: true,
-    count: courses.length,
-    data: courses,
-  });
 });
 
 // @desc        Get a single course
@@ -92,7 +72,7 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
   // Add to body field
   req.body.bootcamp = req.params.bootcampId;
 
-  const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+  const bootcamp = await BootCamp.findById(req.params.bootcampId);
 
   if (!bootcamp) {
     return next(

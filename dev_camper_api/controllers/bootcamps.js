@@ -3,85 +3,12 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const geoCoder = require("../utils/geocoder");
 const BootCamp = require("../models/Bootcamp");
-const Bootcamp = require("../models/Bootcamp");
 
 // @desc        Get all bootcamps
 // @route       GET /api/v1/bootcamps
 // @access      Public
 exports.getBootCamps = asyncHandler(async (req, res, next) => {
-  let query;
-
-  // copy req.query
-  const reqQuery = { ...req.query };
-
-  // Fields to exclude
-  const removeFields = ["select", "sort", "page", "limit"];
-
-  // Loop over removeFields and delete them from reqQuery
-  removeFields.forEach((param) => delete reqQuery[param]);
-
-  // create query string
-  let queryStr = JSON.stringify(reqQuery);
-
-  // create Mongoose operators ($gt, $gte, etc.)
-  queryStr = queryStr.replace(
-    /\b(gt|gte|lt|lte|in)\b/g,
-    (match) => `$${match}`
-  );
-
-  // Finding resources
-  query = BootCamp.find(JSON.parse(queryStr)).populate("courses");
-
-  // SELECT FIELDS (specific fields needs to be extracted)
-  if (req.query.select) {
-    const fields = req.query.select.split(",").join(" "); // get all columns to be seleted
-    query = query.select(fields);
-  }
-
-  // SORT results (sorting order of the output returned)
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(",").join(" "); // get sorting columns
-    query = query.sort(sortBy);
-  } else {
-    // sort the result in a default order: descending createdAt
-    query = query.sort("-createdAt");
-  }
-
-  // Pagination (1 page and 1 item per page by default)
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 25;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const total = await BootCamp.countDocuments(); // Mongoose method
-
-  query = query.skip(startIndex).limit(limit);
-
-  // Executing query
-  const bootCamps = await query;
-
-  // Pagination result
-  const pagination = {};
-
-  if (endIndex < total) {
-    pagination.next = {
-      page: page + 1,
-      limit,
-    };
-  }
-
-  if (startIndex > 0) {
-    pagination.prev = {
-      page: page - 1,
-      limit,
-    };
-  }
-
-  res.status(200).json({
-    success: true,
-    count: bootCamps.length,
-    pagination,
-    data: bootCamps,
-  });
+  res.status(200).json(res.advancedResults); // could get results send by this middleware function in this way
 });
 // @desc        Get a single bootcamp
 // @route       GET /api/v1/bootcamps/:id
@@ -193,7 +120,8 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
       console.error(err);
       return next(new ErrorResponse(`Problem with file upload`, 500));
     }
-    await Bootcamp.findByIdAndUpdate(req.params.id, { photo: file.name });
+    // Update the database, add photo name into it
+    await BootCamp.findByIdAndUpdate(req.params.id, { photo: file.name });
     res
       .status(200)
       .json({ success: true, msg: "Photo uploaded", data: file.name });
