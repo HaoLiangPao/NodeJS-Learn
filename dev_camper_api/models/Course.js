@@ -59,8 +59,12 @@ CourseSchema.statics.getAverageCost = async function (bootcampId) {
 
   // Put into the database
   try {
-    await this.model("Bootcamp").findByInAndUpdate(bootcampId); // Mongoose calling models from each other
-  } catch (error) {}
+    await this.model("BootCamp").findByIdAndUpdate(bootcampId, {
+      averageCost: Math.ceil(obj[0].averageCost / 10) * 10,
+    }); // Mongoose calling models from each other
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // Call getAverageCost after save
