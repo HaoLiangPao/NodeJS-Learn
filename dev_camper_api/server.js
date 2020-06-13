@@ -1,6 +1,8 @@
+const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+const fileupload = require("express-fileupload");
 const colors = require("colors");
 
 // Load env vars (Very important! to place it before any thing that will use an environment variable)
@@ -25,6 +27,10 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+// File uploading
+app.use(fileupload());
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")));
 // Get routes defined
 app.use("/api/v1/bootcamps", bootcamps);
 app.use("/api/v1/courses", courses);

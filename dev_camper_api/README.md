@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan slugify
+npm i express dotenv mongoose colors morgan slugify express-fileupload
 ```
 
 - `express`: web framework
@@ -30,6 +30,8 @@ npm i express dotenv mongoose colors morgan slugify
 - [`node-geocoder`](https://www.npmjs.com/package/node-geocoder): Node library for geocoding and reverse geocoding. Can be used as a nodejs library
 
   - add some environmental variables according to provider of geo infomation and API keys.
+
+- [`express-fileupload`](https://www.npmjs.com/package/express-fileupload): 
 
 
 
