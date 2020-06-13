@@ -151,7 +151,5 @@ exports.deleteBootCamp = asyncHandler(async (req, res, next) => {
     ); // Bad request
   }
   bootCamp.remove();
-  res
-    .status(200)
-    .json({ success: true, msg: "BootCamp deleted", data: bootCamp });
+  res.status(200).json({ success: true, msg: "BootCamp deleted", data: {} });
 });
