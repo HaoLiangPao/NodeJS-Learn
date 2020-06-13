@@ -70,6 +70,24 @@ npm i -D nodemon
 
 ---
 
+## Model:
+
+### Bootcamp.js:
+
+
+
+
+
+
+
+### Course.js
+
+
+
+
+
+---
+
 ## Middleware functions:
 
 ### async.js
@@ -118,7 +136,16 @@ npm i -D nodemon
    
 4. `populate()` in Mongoose: 
 
-   1. populate()
-   2. Virtual:
+   1. populate(): used in Course model
+
+      > Population is the process of automatically replacing the specified paths in the document with document(s) from other collection(s). We may populate a single document, multiple documents, a plain object, multiple plain objects, or all objects returned from a query. 
+
+      1. fetch some columns of information about the associated bootcamp
+
+   2. Virtual populate(): used in Bootcamp model
+
+      > In Mongoose, a virtual is a property that is **not** stored in MongoDB. Virtuals are typically used for computed properties on documents.
+
+      1. fetch all courses related to the bootcamp
 
 5. 
