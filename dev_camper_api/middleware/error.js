@@ -19,11 +19,9 @@ const errorHandler = (err, req, res, next) => {
   // Mongoose duplicate key
   if (err.code === 11000) {
     const { keyValue } = err;
-    // console.log(keyValue);
-    // // console.log(keyValue.values());
-    // console.log(typeof keyValue);
-    // const message = `Duplicate filed values entered, please check the value: ${err.keyValue.values()}`;
-    const message = `Duplicate filed values entered.`;
+    const message = `Duplicate filed values entered, please check the value: ${Object.values(
+      err.keyValue
+    )}`;
     error = new ErrorResponse(message, 400);
   }
 

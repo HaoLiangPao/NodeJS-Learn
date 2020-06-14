@@ -73,16 +73,28 @@ exports.createBootCamp = asyncHandler(async (req, res, next) => {
 // @route       PUT /api/v1/bootcamps/:id
 // @access      Private
 exports.updateBootCamp = asyncHandler(async (req, res, next) => {
-  // Ownership check
-  const bootCamp = await BootCamp.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  let bootCamp = await BootCamp.findById(req.params.id);
   if (!bootCamp) {
     return next(
       new ErrorResponse(`Bootcamp id: ${req.params.id} is invalid!`, 400)
     ); // Bad request
   }
+
+  // Make sure logged in user owns the bootcamp he/she wants to update
+  if (req.user._id !== req.params.id) {
+    return next(
+      new ErrorResponse(
+        `User ${req.user._id} is not authorized to update this bootcamp`,
+        401
+      )
+    );
+  }
+
+  bootCamp = await BootCamp.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
   res.status(200).json({ success: true, data: bootCamp });
 });
 // @desc        Delete a bootcamp
