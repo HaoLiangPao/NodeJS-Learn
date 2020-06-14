@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan slugify express-fileupload
+npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs
 ```
 
 - `express`: web framework
@@ -31,7 +31,11 @@ npm i express dotenv mongoose colors morgan slugify express-fileupload
 
   - add some environmental variables according to provider of geo infomation and API keys.
 
-- [`express-fileupload`](https://www.npmjs.com/package/express-fileupload): 
+- [`express-fileupload`](https://www.npmjs.com/package/express-fileupload): A third-party package which makes file uploads in Node.js easier
+
+- [`jsonwebtoken`](): 
+
+- [`bcryptjs`]():
 
 
 
