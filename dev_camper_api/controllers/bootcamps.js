@@ -1,3 +1,5 @@
+// @ToDo: change ownership check to a method so we do not have to repeat ourselve again and again
+
 const path = require("path");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
@@ -81,7 +83,7 @@ exports.updateBootCamp = asyncHandler(async (req, res, next) => {
   }
 
   // Make sure logged in user owns the bootcamp he/she wants to update
-  if (req.user._id !== req.params.id) {
+  if (req.user._id !== req.params.id && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
         `User ${req.user._id} is not authorized to update this bootcamp`,
@@ -108,6 +110,17 @@ exports.deleteBootCamp = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Bootcamp id: ${req.params.id} is invalid!`, 400)
     ); // Bad request
   }
+
+  // Make sure logged in user owns the bootcamp he/she wants to update
+  if (req.user._id !== req.params.id && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user._id} is not authorized to update this bootcamp`,
+        401
+      )
+    );
+  }
+
   bootCamp.remove();
   res.status(200).json({ success: true, msg: "BootCamp deleted", data: {} });
 });
@@ -122,6 +135,15 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     ); // Bad request
+  }
+  // Make sure logged in user owns the bootcamp he/she wants to update
+  if (req.user._id !== req.params.id && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user._id} is not authorized to update this bootcamp`,
+        401
+      )
+    );
   }
   const file = req.files.file;
   // Check if a file uploaded
