@@ -158,4 +158,12 @@ npm i -D nodemon
 
       1. fetch all courses related to the bootcamp
 
-5. 
+
+
+
+
+---
+
+## Problem:
+
+1. redirect routes (from bootcamp to courses) having trouble using middleware fucntions.

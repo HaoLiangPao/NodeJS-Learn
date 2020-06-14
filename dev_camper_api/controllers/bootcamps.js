@@ -46,10 +46,26 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
     .status(200)
     .json({ success: true, count: bootcamps.length, data: bootcamps });
 });
-// @desc        Add a bootcamp
+// @desc        Create a new bootcamp
 // @route       POST /api/v1/bootcamps
 // @access      Private
 exports.createBootCamp = asyncHandler(async (req, res, next) => {
+  // Add userID fetched from req.user to req.body
+  req.body.user = req.user._id;
+
+  // Check for published bootcamp
+  const publishedBootcamp = await BootCamp.findOne({ user: req.user._id });
+
+  // If the user is not admin, they can only add one bootcamp
+  if (publishedBootcamp && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `The user with ID ${req.user._id} has already published a bootcamp`,
+        400
+      )
+    );
+  }
+
   const bootCamp = await BootCamp.create(req.body);
   res.status(201).json({ success: true, data: bootCamp });
 });
@@ -57,6 +73,7 @@ exports.createBootCamp = asyncHandler(async (req, res, next) => {
 // @route       PUT /api/v1/bootcamps/:id
 // @access      Private
 exports.updateBootCamp = asyncHandler(async (req, res, next) => {
+  // Ownership check
   const bootCamp = await BootCamp.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
