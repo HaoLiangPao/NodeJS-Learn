@@ -1,4 +1,6 @@
 const express = require("express");
+
+// Get route functions from controller
 const {
   getBootCamps,
   getBootCamp,
@@ -9,8 +11,11 @@ const {
   bootcampPhotoUpload,
 } = require("../controllers/bootcamps");
 
+// Get advanced GET query handler as a middleware function
 const BootCamp = require("../models/Bootcamp");
 const advancedResults = require("../middleware/advancedResults");
+// Get authentification middleware function
+const { protect } = require("../middleware/auth");
 
 // Include other resource routers
 const courseRouter = require("./courses");
@@ -24,17 +29,17 @@ router.use("/:bootcampId/courses", courseRouter);
 
 router.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
 
-router.route("/:id/photo").put(bootcampPhotoUpload);
+router.route("/:id/photo").put(protect, bootcampPhotoUpload);
 
 router
   .route("/")
   .get(advancedResults(BootCamp, "courses"), getBootCamps) // run the middleware function before getBootCamps(), so that we have pagination and other advanced stuff implemented
-  .post(createBootCamp);
+  .post(protect, createBootCamp);
 
 router
   .route("/:id")
   .get(getBootCamp)
-  .put(updateBootCamp)
-  .delete(deleteBootCamp);
+  .put(protect, updateBootCamp)
+  .delete(protect, deleteBootCamp);
 
 module.exports = router;
