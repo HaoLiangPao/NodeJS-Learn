@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const fileupload = require("express-fileupload");
 const colors = require("colors");
+const cookieParser = require("cookie-parser");
 
 // Load env vars (Very important! to place it before any thing that will use an environment variable)
 dotenv.config({ path: "./config/config.env" });
@@ -24,6 +25,8 @@ connectDB();
 // --------- Calling Middleware Functions -----------
 // Use body parser
 app.use(express.json());
+// Cookie parser
+app.use(cookieParser());
 // Dev logger
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));

@@ -33,9 +33,13 @@ npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebto
 
 - [`express-fileupload`](https://www.npmjs.com/package/express-fileupload): A third-party package which makes file uploads in Node.js easier
 
-- [`jsonwebtoken`](): 
+- [`jsonwebtoken`](https://www.npmjs.com/package/jsonwebtoken): A third-party package which encrypt certain information for login purposes
 
-- [`bcryptjs`]():
+- [`bcryptjs`](https://www.npmjs.com/package/bcryptjs): A third-party package which allows us to encrypt users' password
+
+  > Besides incorporating a salt to protect against rainbow table attacks, bcrypt is an adaptive function: over time, the iteration count can be increased to make it slower, so it remains resistant to brute-force search attacks even with increasing computation power.
+
+- [`cookie-parser`](https://www.npmjs.com/package/cookie-parser): 
 
 
 
