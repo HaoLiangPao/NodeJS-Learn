@@ -32,59 +32,34 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
   }
 });
 
-// // @desc        Get a single course
-// // @route       GET /api/v1/reviews/:id
-// // @route       GET /api/v1/bootcamps/:bootcampId/reviews/:id
-// // @access      Public
-// exports.getReviews = asyncHandler(async (req, res, next) => {
-//   let query;
+// @desc        Get a single review
+// @route       GET /api/v1/reviews/:id
+// @access      Public
+exports.getReview = asyncHandler(async (req, res, next) => {
+  // Get the review based on review id
+  const review = await Review.findById(req.params.id).populate({
+    path: "bootcamp",
+    select: "name description",
+  });
 
-//   if (req.params.bootcampId) {
-//     //@To-Do: add multiple queries here to get specific course given the bootcamp
-//     query = Reviews.find({ bootcamp: req.params.bootcampId });
-//   } else {
-//     query = Reviews.findById(req.params.id).populate({
-//       path: "bootcamp",
-//       select: "name description",
-//     });
-//   }
+  if (!review) {
+    return next(
+      new ErrorResponse(
+        `No reviews found with id of ${req.params.id}, please check the id`
+      )
+    );
+  }
 
-//   const reviews = await query;
+  res.status(200).json({
+    success: true,
+    data: review,
+  });
+});
 
-//   if (!reviews) {
-//     return next(
-//       new ErrorResponse(
-//         `No resources found with id of ${req.params.id}, please check the id`
-//       )
-//     );
-//   }
-
-//   res.status(200).json({
-//     success: true,
-//     data: reviews,
-//   });
-// });
-
-// // @desc        Add a course
-// // @route       POST /api/v1/bootcamps/:bootcampId/reviews
-// // @access      Private
-// exports.addReviews = asyncHandler(async (req, res, next) => {
-//   // Add ownership to the new course
-//   req.body.bootcamp = req.params.bootcampId;
-//   req.body.user = req.user.id;
-//   // Add to body field
-//   req.body.bootcamp = req.params.bootcampId;
-
-//   const bootcamp = await BootCamp.findById(req.params.bootcampId);
-
-//   if (!bootcamp) {
-//     return next(
-//       new ErrorResponse(
-//         `No bootcamp found with the id of ${req.params.bootcampId}, please check id`,
-//         404
-//       )
-//     );
-//   }
+// @desc        Add a review
+// @route       POST /api/v1/bootcamps/:bootcampId/reviews
+// @access      Private
+exports.addReviews = asyncHandler(async (req, res, next) => {});
 
 //   // Make sure the logged in user is the owner of the bootcamp
 //   if (req.user.id !== bootcamp.user.toString() && req.user.role !== "admin") {

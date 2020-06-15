@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { getReviews } = require("../controllers/reviews");
+const { getReviews, getReview } = require("../controllers/reviews");
 const Review = require("../models/Review");
 
 const router = express.Router({ mergeParams: true });
@@ -9,6 +9,7 @@ const router = express.Router({ mergeParams: true });
 const { protect, authorize } = require("../middleware/auth");
 const advancedResult = require("../middleware/advancedResults");
 
+// Defining the routes
 router.route("/").get(
   advancedResult(Review, {
     path: "bootcamp",
@@ -16,5 +17,7 @@ router.route("/").get(
   }),
   getReviews
 );
+
+router.route("/:id").get(getReview);
 
 module.exports = router;
