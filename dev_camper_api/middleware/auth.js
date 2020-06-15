@@ -12,12 +12,12 @@ exports.protect = asyncHander(async (req, res, next) => {
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
+    // Set token from Bearer token in hearder
     token = req.headers.authorization.split(" ")[1];
+    // Set token from cookie if no Bearer token foound in header
+  } else if (req.cookies.token) {
+    token = req.cookies.token;
   }
-  // Not used for development testing?
-  // else if (req.cookies.token) {
-  //   token = req.cookies.token;
-  // }
 
   // Make sure token exists
   if (!token) {

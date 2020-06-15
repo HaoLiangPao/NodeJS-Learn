@@ -174,3 +174,6 @@ npm i -D nodemon
 ## Problem:
 
 1. redirect routes (from bootcamp to courses) having trouble using middleware fucntions.
+2. Aggregated functions not working when removing the last course or review. should take care this boundary case
+3. Does cookies must to have a expire time?
+
