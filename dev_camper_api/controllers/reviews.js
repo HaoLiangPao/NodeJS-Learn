@@ -81,89 +81,71 @@ exports.addReview = asyncHandler(async (req, res, next) => {
   res.status(201).json({ success: true, data: review });
 });
 
-//   // Make sure the logged in user is the owner of the bootcamp
-//   if (req.user.id !== bootcamp.user.toString() && req.user.role !== "admin") {
-//     return next(
-//       new ErrorResponse(
-//         `User ${req.user.id} is not authorized to add a course to bootcamp ${req.params.bootcampId}`,
-//         401
-//       )
-//     );
-//   }
+// @desc        Update a review
+// @route       PUT /api/v1/reviews/:id
+// @access      Private
+exports.updateReview = asyncHandler(async (req, res, next) => {
+  let review = await Review.findById(req.params.id);
+  // Reviews id not exists
+  if (!review) {
+    return next(
+      new ErrorResponse(
+        `No review found with the id of ${req.params.id}, please check id`,
+        404
+      )
+    );
+  }
+  // Make sure the logged in user is the owner of the review or the user's role is admin
+  if (req.user.id !== review.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to update review with id of ${req.params.id}`,
+        401
+      )
+    );
+  }
 
-//   const course = await Reviews.create(req.body);
+  review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
-//   res.status(201).json({
-//     success: true,
-//     data: course,
-//   });
-// });
+  res.status(200).json({
+    success: true,
+    data: review,
+  });
+});
 
-// // @desc        Update a course
-// // @route       PUT /api/v1/reviews/:id
-// // @access      Private
-// exports.updateReviews = asyncHandler(async (req, res, next) => {
-//   let course = await Reviews.findById(req.params.id);
-//   // Reviews id not exists
-//   if (!course) {
-//     return next(
-//       new ErrorResponse(
-//         `No course found with the id of ${req.params.id}, please check id`,
-//         404
-//       )
-//     );
-//   }
-//   // Make sure the logged in user is the owner of the course
-//   if (req.user.id !== course.user.toString() && req.user.role !== "admin") {
-//     return next(
-//       new ErrorResponse(
-//         `User ${req.user.id} is not authorized to update course with id of ${req.params.bootcampId}`,
-//         401
-//       )
-//     );
-//   }
+// @desc        Delete a review
+// @route       DELETE /api/v1/reviews/:id
+// @access      Private
+exports.deleteReview = asyncHandler(async (req, res, next) => {
+  let review = await Review.findById(req.params.id);
+  // Review's id does not exist
+  if (!review) {
+    return {
+      success: false,
+      data: new ErrorResponse(
+        `No review found with the id of ${req.params.id}, please check id`,
+        404
+      ),
+    };
+  }
+  // Make sure the logged in user is the owner of the review
+  if (req.user.id !== review.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete review with id of ${req.params.id}`,
+        401
+      )
+    );
+  }
 
-//   course = await Reviews.findByIdAndUpdate(req.params.id, req.body, {
-//     new: true,
-//     runValidators: true,
-//   });
+  await review.remove();
 
-//   res.status(200).json({
-//     success: true,
-//     data: course,
-//   });
-// });
-
-// // @desc        Delete a course
-// // @route       DELETE /api/v1/reviews/:id
-// // @access      Private
-// exports.deleteReviews = asyncHandler(async (req, res, next) => {
-//   let course = await Reviews.findById(req.params.id);
-//   // Reviews id not exists
-//   if (!course) {
-//     return {
-//       success: false,
-//       data: new ErrorResponse(
-//         `No course found with the id of ${req.params.id}, please check id`,
-//         404
-//       ),
-//     };
-//   }
-//   // Make sure the logged in user is the owner of the course
-//   if (req.user.id !== course.user.toString() && req.user.role !== "admin") {
-//     return next(
-//       new ErrorResponse(
-//         `User ${req.user.id} is not authorized to delete course with id of ${req.params.bootcampId}`,
-//         401
-//       )
-//     );
-//   }
-
-//   await course.remove();
-
-//   res.status(200).json({
-//     success: true,
-//     msg: "Reviews deleted",
-//     data: {},
-//   });
-// });
+  res.status(200).json({
+    success: true,
+    msg: "Review deleted",
+    data: {},
+  });
+});
