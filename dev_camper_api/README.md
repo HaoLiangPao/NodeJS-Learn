@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer express-mongo-sanitize
+npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer express-mongo-sanitize helmet
 ```
 
 - `express`: web framework
@@ -49,7 +49,11 @@ npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebto
   >
   > The best way to prevent this is to sanitize the received data, and remove any offending keys, or replace the characters with a 'safe' one.
 
+- [`helmet`](https://www.npmjs.com/package/helmet): Helps to secure Express apps by setting various HTTP headers.
 
+- [`xss-clean`](https://www.npmjs.com/package/xss-clean): Prevent possible embedded harmful code (prevent xss attacks)
+
+  - name="Post1 `<script>some js code</script>`", if the name get embedded to the webpage, the script will be ran on that page, one way to prevent this from happening is to clean the input.
 
 ```bash
 npm i -D nodemon

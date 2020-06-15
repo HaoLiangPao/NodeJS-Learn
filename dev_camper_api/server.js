@@ -14,6 +14,7 @@ const errorHandler = require("./middleware/error");
 const cookieParser = require("cookie-parser");
 const fileupload = require("express-fileupload");
 const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
@@ -38,6 +39,8 @@ if (process.env.NODE_ENV === "development") {
 app.use(fileupload());
 // Sanitize user input in (req.body; req.params; req.query)
 app.use(mongoSanitize());
+// Set security headers
+app.use(helmet());
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
