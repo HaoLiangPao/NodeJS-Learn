@@ -1,18 +1,19 @@
 const path = require("path");
 const express = require("express");
-const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const fileupload = require("express-fileupload");
 const colors = require("colors");
-const cookieParser = require("cookie-parser");
 
 // Load env vars (Very important! to place it before any thing that will use an environment variable)
+const dotenv = require("dotenv");
 dotenv.config({ path: "./config/config.env" });
 
 // Middleware files
 // const logger = require("./middleware/logger"); // custom logger
 const morgan = require("morgan");
 const errorHandler = require("./middleware/error");
+const cookieParser = require("cookie-parser");
+const fileupload = require("express-fileupload");
+const mongoSanitize = require("express-mongo-sanitize");
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
@@ -35,6 +36,9 @@ if (process.env.NODE_ENV === "development") {
 }
 // File uploading
 app.use(fileupload());
+// Sanitize user input in (req.body; req.params; req.query)
+app.use(mongoSanitize());
+
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
 // Get routes defined

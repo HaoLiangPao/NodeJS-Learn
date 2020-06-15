@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer
+npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer express-mongo-sanitize
 ```
 
 - `express`: web framework
@@ -39,9 +39,15 @@ npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebto
 
   > Besides incorporating a salt to protect against rainbow table attacks, bcrypt is an adaptive function: over time, the iteration count can be increased to make it slower, so it remains resistant to brute-force search attacks even with increasing computation power.
 
-- [`cookie-parser`](https://www.npmjs.com/package/cookie-parser): 
+- [`cookie-parser`](https://www.npmjs.com/package/cookie-parser): A third-party package which parse the cookie, so we can read data from it
 
-- [`nodemailer`](https://www.npmjs.com/package/nodemailer): 
+- [`nodemailer`](https://www.npmjs.com/package/nodemailer): used for sending emails when user forgot their password
+
+  > Why?
+  >
+  > Object keys starting with a `$` or containing a `.` are *reserved* for use by MongoDB as operators. Without this sanitization, malicious users could send an object containing a `$` operator, or including a `.`, which could change the context of a database operation. Most notorious is the `$where` operator, which can execute arbitrary JavaScript on the database.
+  >
+  > The best way to prevent this is to sanitize the received data, and remove any offending keys, or replace the characters with a 'safe' one.
 
 
 
@@ -176,4 +182,5 @@ npm i -D nodemon
 1. redirect routes (from bootcamp to courses) having trouble using middleware fucntions.
 2. Aggregated functions not working when removing the last course or review. should take care this boundary case
 3. Does cookies must to have a expire time?
+4. Why does NOSQL injection works?
 
