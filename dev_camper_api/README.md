@@ -157,6 +157,11 @@ npm i -D nodemon
       > In Mongoose, a virtual is a property that is **not** stored in MongoDB. Virtuals are typically used for computed properties on documents.
 
       1. fetch all courses related to the bootcamp
+   
+5. why we use course.user.toString() in course controller but not bootcamp controller
+
+   1. `course.user` returns an `ObjectID`, which can not be compared to string id by `!==`
+   2. `req.params.id` and `req.user.id` both return string type so we can compare them simply through `!==`
 
 
 

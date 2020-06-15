@@ -69,6 +69,9 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 // @route       POST /api/v1/bootcamps/:bootcampId/courses
 // @access      Private
 exports.addCourse = asyncHandler(async (req, res, next) => {
+  // Add ownership to the new course
+  req.body.bootcamp = req.params.bootcampId;
+  req.body.user = req.user.id;
   // Add to body field
   req.body.bootcamp = req.params.bootcampId;
 
@@ -79,6 +82,16 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
       new ErrorResponse(
         `No bootcamp found with the id of ${req.params.bootcampId}, please check id`,
         404
+      )
+    );
+  }
+
+  // Make sure the logged in user is the owner of the bootcamp
+  if (req.user.id !== bootcamp.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to add a course to bootcamp ${req.params.bootcampId}`,
+        401
       )
     );
   }
@@ -96,12 +109,21 @@ exports.addCourse = asyncHandler(async (req, res, next) => {
 // @access      Private
 exports.updateCourse = asyncHandler(async (req, res, next) => {
   let course = await Course.findById(req.params.id);
-
+  // Course id not exists
   if (!course) {
     return next(
       new ErrorResponse(
         `No course found with the id of ${req.params.id}, please check id`,
         404
+      )
+    );
+  }
+  // Make sure the logged in user is the owner of the course
+  if (req.user.id !== course.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to update course with id of ${req.params.bootcampId}`,
+        401
       )
     );
   }
@@ -122,12 +144,22 @@ exports.updateCourse = asyncHandler(async (req, res, next) => {
 // @access      Private
 exports.deleteCourse = asyncHandler(async (req, res, next) => {
   let course = await Course.findById(req.params.id);
-
+  // Course id not exists
   if (!course) {
-    return next(
-      new ErrorResponse(
+    return {
+      success: false,
+      data: new ErrorResponse(
         `No course found with the id of ${req.params.id}, please check id`,
         404
+      ),
+    };
+  }
+  // Make sure the logged in user is the owner of the course
+  if (req.user.id !== course.user.toString() && req.user.role !== "admin") {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete course with id of ${req.params.bootcampId}`,
+        401
       )
     );
   }

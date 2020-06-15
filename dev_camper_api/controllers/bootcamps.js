@@ -53,16 +53,16 @@ exports.getBootcampsInRadius = asyncHandler(async (req, res, next) => {
 // @access      Private
 exports.createBootCamp = asyncHandler(async (req, res, next) => {
   // Add userID fetched from req.user to req.body
-  req.body.user = req.user._id;
+  req.body.user = req.user.id;
 
   // Check for published bootcamp
-  const publishedBootcamp = await BootCamp.findOne({ user: req.user._id });
+  const publishedBootcamp = await BootCamp.findOne({ user: req.user.id });
 
   // If the user is not admin, they can only add one bootcamp
   if (publishedBootcamp && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
-        `The user with ID ${req.user._id} has already published a bootcamp`,
+        `The user with ID ${req.user.id} has already published a bootcamp`,
         400
       )
     );
@@ -83,10 +83,10 @@ exports.updateBootCamp = asyncHandler(async (req, res, next) => {
   }
 
   // Make sure logged in user owns the bootcamp he/she wants to update
-  if (req.user._id !== req.params.id && req.user.role !== "admin") {
+  if (req.user.id !== req.params.id && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
-        `User ${req.user._id} is not authorized to update this bootcamp`,
+        `User ${req.user.id} is not authorized to update this bootcamp`,
         401
       )
     );
@@ -112,10 +112,10 @@ exports.deleteBootCamp = asyncHandler(async (req, res, next) => {
   }
 
   // Make sure logged in user owns the bootcamp he/she wants to update
-  if (req.user._id !== req.params.id && req.user.role !== "admin") {
+  if (req.user.id !== req.params.id && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
-        `User ${req.user._id} is not authorized to update this bootcamp`,
+        `User ${req.user.id} is not authorized to update this bootcamp`,
         401
       )
     );
@@ -137,10 +137,10 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
     ); // Bad request
   }
   // Make sure logged in user owns the bootcamp he/she wants to update
-  if (req.user._id !== req.params.id && req.user.role !== "admin") {
+  if (req.user.id !== req.params.id && req.user.role !== "admin") {
     return next(
       new ErrorResponse(
-        `User ${req.user._id} is not authorized to update this bootcamp`,
+        `User ${req.user.id} is not authorized to update this bootcamp`,
         401
       )
     );
