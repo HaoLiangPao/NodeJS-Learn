@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs
+npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer
 ```
 
 - `express`: web framework
@@ -40,6 +40,8 @@ npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebto
   > Besides incorporating a salt to protect against rainbow table attacks, bcrypt is an adaptive function: over time, the iteration count can be increased to make it slower, so it remains resistant to brute-force search attacks even with increasing computation power.
 
 - [`cookie-parser`](https://www.npmjs.com/package/cookie-parser): 
+
+- [`nodemailer`](https://www.npmjs.com/package/nodemailer): 
 
 
 
