@@ -2,6 +2,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const Review = require("../models/Review");
 const BootCamp = require("../models/Bootcamp");
+const Bootcamp = require("../models/Bootcamp");
 
 // @desc        Get all reviews
 // @route 1     GET /api/v1/reviews
@@ -59,7 +60,26 @@ exports.getReview = asyncHandler(async (req, res, next) => {
 // @desc        Add a review
 // @route       POST /api/v1/bootcamps/:bootcampId/reviews
 // @access      Private
-exports.addReviews = asyncHandler(async (req, res, next) => {});
+exports.addReview = asyncHandler(async (req, res, next) => {
+  // Get user id from middleware function, and bootcampId from params
+  req.body.user = req.user.id;
+  req.body.bootcamp = req.params.bootcampId;
+
+  const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+
+  if (!bootcamp) {
+    return next(
+      new ErrorResponse(
+        `No bootcamp with id of ${req.params.bootcampId} found in the database, please check id`,
+        404
+      )
+    );
+  }
+
+  const review = await Review.create(req.body);
+
+  res.status(201).json({ success: true, data: review });
+});
 
 //   // Make sure the logged in user is the owner of the bootcamp
 //   if (req.user.id !== bootcamp.user.toString() && req.user.role !== "admin") {
