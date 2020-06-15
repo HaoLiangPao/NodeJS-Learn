@@ -165,7 +165,7 @@ npm i -D nodemon
    1. `course.user` returns an `ObjectID`, which can not be compared to string id by `!==`
    2. `req.params.id` and `req.user.id` both return string type so we can compare them simply through `!==`
 
-
+6. If a query hanging at an endpoint, you better check the port it is communicating with. (I was debugging for a long time with `sendMail()` function provided by `nodeMail`, and it turned out to be a **wrong port** in `config file`.)
 
 
 

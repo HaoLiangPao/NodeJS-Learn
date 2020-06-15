@@ -1,6 +1,8 @@
+const crypto = require("crypto");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const BootCamp = require("../models/Bootcamp");
+const sendEmail = require("../utils/sendEmail");
 const User = require("../models/User");
 
 // @desc        Register a user
@@ -75,10 +77,76 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   // Get reset token
   const resetToken = user.getResetPasswordToken();
 
-  // Don't run the validator, just modify the specific user
+  // Save the user to the database
   await user.save({ validateBeforeSave: false });
 
-  res.status(200).json({ success: true, data: user });
+  // Create reset url
+  const resetUrl = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/auth/resetpassword/${resetToken}`;
+  // Create message
+  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: "Password reset token",
+      message,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: `Email sent to ${req.body.email}, please check`,
+    });
+  } catch (error) {
+    console.log(error);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new ErrorResponse(`Email could not be sent to ${req.body.email}`),
+      500
+    );
+  }
+});
+// @desc        Reset password
+// @route       PUT /api/v1/auth/resetpassword/:resettoken
+// @access      Public
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  // Get resetToken from request parameters
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resettoken)
+    .digest("hex");
+
+  // Check the hashed token and validation of the token
+  const user = await User.findOne({
+    resetPasswordToken, // hashed value comparison
+    resetPasswordExpire: { $gt: Date.now() }, // expired time and current time comparision
+  });
+
+  // If token not match or token expired
+  if (!user) {
+    return next(
+      new ErrorResponse(
+        `Invalid token or token expired, please reset the password again`,
+        400
+      )
+    );
+  }
+
+  // Token validation passed, set new password to the password in input params
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  // Save the user in the database
+  await user.save();
+
+  // Send back a token (automatically login the user)
+  sendTokenResponse(user, 200, res);
 });
 
 // -- Helper Function --
