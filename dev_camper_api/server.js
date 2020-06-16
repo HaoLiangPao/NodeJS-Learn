@@ -15,6 +15,7 @@ const cookieParser = require("cookie-parser");
 const fileupload = require("express-fileupload");
 const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
+const xss = require("xss-clean");
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
@@ -41,6 +42,8 @@ app.use(fileupload());
 app.use(mongoSanitize());
 // Set security headers
 app.use(helmet());
+// Prevent XSS attacks
+app.use(xss()); // for example, prevent <script> to be added, by changing it to &lt;
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
