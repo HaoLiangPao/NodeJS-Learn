@@ -18,6 +18,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
+const cors = require("cors");
 
 // Route files
 const bootcamps = require("./routes/bootcamps");
@@ -57,6 +58,8 @@ const limiter = rateLimit({
 app.use(limiter);
 // Prevent http param pollution
 app.use(hpp());
+// Enable CORS (shared back end, crosss origin)
+app.use(cors());
 
 // --------- Route Handling -----------
 // Set static folder

@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer express-mongo-sanitize helmet xss-clean express-rate-limit hpp
+npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer express-mongo-sanitize helmet xss-clean express-rate-limit hpp cors
 ```
 
 - `express`: web framework
@@ -58,6 +58,8 @@ npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebto
 - [`express-rate-limit`](https://www.npmjs.com/package/express-rate-limit): Basic rate-limiting middleware for Express. Use to limit repeated requests to public APIs and/or endpoints such as password reset.
 
 - [`hpp`](https://www.npmjs.com/package/hpp): Express middleware to protect against HTTP Parameter Pollution attacks
+
+- [`cors`](https://www.npmjs.com/package/cors): CORS is a node.js package for providing a [Connect](http://www.senchalabs.org/connect/)/[Express](http://expressjs.com/) middleware that can be used to enable [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing) with various options.
 
 ```bash
 npm i -D nodemon
