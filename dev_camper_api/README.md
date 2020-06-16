@@ -5,7 +5,7 @@
 
 
 ```bash
-npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer express-mongo-sanitize helmet
+npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebtoken bcryptjs nodemailer express-mongo-sanitize helmet xss-clean express-rate-limit hpp
 ```
 
 - `express`: web framework
@@ -54,6 +54,10 @@ npm i express dotenv mongoose colors morgan slugify express-fileupload jsonwebto
 - [`xss-clean`](https://www.npmjs.com/package/xss-clean): Prevent possible embedded harmful code (prevent xss attacks)
 
   - name="Post1 `<script>some js code</script>`", if the name get embedded to the webpage, the script will be ran on that page, one way to prevent this from happening is to clean the input.
+
+- [`express-rate-limit`](https://www.npmjs.com/package/express-rate-limit): Basic rate-limiting middleware for Express. Use to limit repeated requests to public APIs and/or endpoints such as password reset.
+
+- [`hpp`](https://www.npmjs.com/package/hpp): Express middleware to protect against HTTP Parameter Pollution attacks
 
 ```bash
 npm i -D nodemon
