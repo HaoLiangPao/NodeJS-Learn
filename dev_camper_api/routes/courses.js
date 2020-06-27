@@ -15,7 +15,7 @@ const advancedResults = require("../middleware/advancedResults");
 const { protect, authorize } = require("../middleware/auth");
 
 // Take care of redirecting routes from Bootcamp router
-const router = express.Router({ mergeParams: true }); // merge url params from both bootcamp and courses
+const router = express.Router(); // merge url params from both bootcamp and courses
 
 router
   .route("/")

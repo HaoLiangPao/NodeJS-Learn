@@ -70,7 +70,6 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 // @access      Private
 exports.addCourse = asyncHandler(async (req, res, next) => {
   // Add ownership to the new course
-  req.body.bootcamp = req.params.bootcampId;
   req.body.user = req.user.id;
   // Add to body field
   req.body.bootcamp = req.params.bootcampId;
